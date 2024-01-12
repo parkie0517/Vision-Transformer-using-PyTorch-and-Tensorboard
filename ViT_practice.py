@@ -149,7 +149,7 @@ def main():
     parer.add_argument('--batch_size', type=int, default=128)
     parer.add_argument('--lr', type=float, default=0.001)
     parer.add_argument('--step_size', type=int, default=100)
-    parer.add_argument('--root', type=str, default='./CIFAR10')
+    parer.add_argument('--root', type=str, default='/root/datasets/ViT_practice/cifar10') # This is where the dataset is downloaded
     parer.add_argument('--log_dir', type=str, default='./log')
     parer.add_argument('--name', type=str, default='vit_cifar10')
     parer.add_argument('--rank', type=int, default=0)
