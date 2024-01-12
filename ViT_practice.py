@@ -63,7 +63,7 @@ class MSA(nn.Module):
         qkv = self.qkv(x).reshape(B, N, 3, self.num_heads, C // self.num_heads).permute(2, 0, 3, 1, 4) # create the queue, key, value
         q, k, v = qkv.unbind(0)
 
-        attn = (q @ k.transpose(-2, -1)) * self.scaleg
+        attn = (q @ k.transpose(-2, -1)) * self.scale
 
         attn = attn.softmax(dim=-1)
         attn = self.attn_drop(attn) # apply drop out to the attention scores
@@ -150,7 +150,7 @@ def main():
     parer.add_argument('--lr', type=float, default=0.001)
     parer.add_argument('--step_size', type=int, default=100)
     parer.add_argument('--root', type=str, default='/root/datasets/ViT_practice/cifar10') # This is where the dataset is downloaded
-    parer.add_argument('--log_dir', type=str, default='./log')
+    parer.add_argument('--log_dir', type=str, default='./model') # define the path used for storing the saved models
     parer.add_argument('--name', type=str, default='vit_cifar10')
     parer.add_argument('--rank', type=int, default=0)
     ops = parer.parse_args()
