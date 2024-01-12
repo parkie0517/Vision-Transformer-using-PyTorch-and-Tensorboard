@@ -79,13 +79,13 @@ class MLP(nn.Module):
         super().__init__()
         out_features = in_features
 
-        self.fc1 = nn.Linear(in_features, hidden_features, bias=bias)
-        self.act = act_layer()
-        self.drop1 = nn.Dropout(drop)
-        self.fc2 = nn.Linear(hidden_features, out_features, bias=bias)
-        self.drop2 = nn.Dropout(drop)
+        self.fc1 = nn.Linear(in_features, hidden_features, bias=bias) # define the first mlp layer
+        self.act = act_layer() # define the activation layer
+        self.drop1 = nn.Dropout(drop) # define the first dropout layer
+        self.fc2 = nn.Linear(hidden_features, out_features, bias=bias) # define the second mlp layer
+        self.drop2 = nn.Dropout(drop) # define the second dropout layer
 
-    def forward(self, x):
+    def forward(self, x): # define the forard function
         x = self.fc1(x)
         x = self.act(x)
         x = self.drop1(x)
