@@ -100,12 +100,12 @@ class Block(nn.Module):
                  drop=0., attn_drop=0., act_layer=nn.GELU, norm_layer=nn.LayerNorm,
                  ):
         super().__init__()
-        self.norm1 = norm_layer(dim)
-        self.norm2 = norm_layer(dim)
+        self.norm1 = norm_layer(dim) # define the first layer normalization layer (uses layer normalization instead of batch normalization)
+        self.norm2 = norm_layer(dim) # define the second layer normalization layer
         self.attn = MSA(dim, num_heads=num_heads, qkv_bias=qkv_bias, attn_drop=attn_drop, proj_drop=drop)
         self.mlp = MLP(in_features=dim, hidden_features=int(dim * mlp_ratio), act_layer=act_layer, drop=drop)
 
-    def forward(self, x):
+    def forward(self, x): # define the forward pass
         x = x + self.attn(self.norm1(x))
         x = x + self.mlp(self.norm2(x))
         return x
