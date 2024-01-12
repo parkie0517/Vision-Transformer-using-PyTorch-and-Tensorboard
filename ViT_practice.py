@@ -51,22 +51,22 @@ class MSA(nn.Module):
         assert dim % num_heads == 0, 'dim should be divisible by num_heads'
         self.num_heads = num_heads
         head_dim = dim // num_heads
-        self.scale = head_dim ** -0.5
+        self.scale = head_dim ** -0.5 # define the scaling scalar
 
-        self.qkv = nn.Linear(dim, dim * 3, bias=qkv_bias)
+        self.qkv = nn.Linear(dim, dim * 3, bias=qkv_bias) # define the matrices weight_queue,  weight_key,  weight_value
         self.attn_drop = nn.Dropout(attn_drop)
         self.proj = nn.Linear(dim, dim)
         self.proj_drop = nn.Dropout(proj_drop)
 
     def forward(self, x):
         B, N, C = x.shape
-        qkv = self.qkv(x).reshape(B, N, 3, self.num_heads, C // self.num_heads).permute(2, 0, 3, 1, 4)
+        qkv = self.qkv(x).reshape(B, N, 3, self.num_heads, C // self.num_heads).permute(2, 0, 3, 1, 4) # create the queue, key, value
         q, k, v = qkv.unbind(0)
 
-        attn = (q @ k.transpose(-2, -1)) * self.scale
+        attn = (q @ k.transpose(-2, -1)) * self.scaleg
 
         attn = attn.softmax(dim=-1)
-        attn = self.attn_drop(attn)
+        attn = self.attn_drop(attn) # apply drop out to the attention scores
 
         x = (attn @ v).transpose(1, 2).reshape(B, N, C)
         x = self.proj(x)
@@ -268,7 +268,7 @@ def main():
 
         scheduler.step()
         # Use tensorboard to record the validation acc and loss
-        writer.add_scalar('valudation accuracy', accuracy, epoch)
+        writer.add_scalar('valudation accuracy', accuracy, epoch) # use add_scalar() function to write
         writer.add_scalar('valudation loss', val_avg_loss, epoch)
     writer.flush()
     
